@@ -3,8 +3,10 @@ package GameCode;
 import org.jdesktop.xswingx.PromptSupport;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class MainMenu extends JFrame {
+public class MainMenu extends JPanel {
 
     private JButton startButton;
     private JComboBox<String> comboBox;
@@ -13,13 +15,6 @@ public class MainMenu extends JFrame {
     private MainMenuListener mainMenuListener;
 
     public MainMenu() {
-        super("Tko želi biti milijunaš!");
-        setSize(800, 600);
-        setIconImage(new ImageIcon("App/src/Images/WWTBAMUS2020Logo.png").getImage());
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-        setResizable(false);
-        setVisible(true);
         createComponents();
         componentLayout();
     }
@@ -63,5 +58,34 @@ public class MainMenu extends JFrame {
         add(comboBox, gbc);
     }
 
+    public void setMainMenuListener(MainMenuListener mnl){
+        this.mainMenuListener = mnl;
+    }
 
+    public void activateMainMenu(){
+        if (mainMenuListener != null){
+            startButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    String name = nameField.getText();
+                    if (name.equals("")){
+                        JOptionPane.showMessageDialog(null, "Molimo unesite svoje ime!", "Greška", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                    String theme = (String) comboBox.getSelectedItem();
+                    if (theme == null){
+                        JOptionPane.showMessageDialog(null, "Molimo odaberite temu igre!", "Greška", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                    MainMenuEvent mme = new MainMenuEvent(this, name, theme);
+                    mainMenuListener.startGameEventOccured(mme);
+                    GameArea gameArea = new GameArea();
+                    JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(MainMenu.this);
+                    frame.getContentPane().removeAll();
+                    frame.repaint();
+                    frame.revalidate();
+                }
+            });
+        }
+    }
 }
