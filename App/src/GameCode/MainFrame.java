@@ -6,7 +6,6 @@ import java.awt.*;
 public class MainFrame extends JFrame {
 
     private MainMenu mainMenu;
-    private GameArea gameArea;
 
     public MainFrame() {
         super("Tko želi biti milijunaš!");
@@ -22,7 +21,6 @@ public class MainFrame extends JFrame {
 
     private void createComponents() {
         mainMenu = new MainMenu();
-        gameArea = new GameArea();
     }
 
     private void componentLayout() {
@@ -41,7 +39,7 @@ public class MainFrame extends JFrame {
             String name = event.getName();
             String theme = event.getTheme();
             System.out.println(name + " " + theme);
-            JOptionPane.showMessageDialog(null, "Sretno " + name + "!", "Sretno", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, event.toString(), "Sretno", JOptionPane.INFORMATION_MESSAGE);
         });
         mainMenu.activateMainMenu();
     }

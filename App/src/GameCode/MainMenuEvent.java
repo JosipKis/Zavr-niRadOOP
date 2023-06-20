@@ -29,6 +29,6 @@ public class MainMenuEvent extends EventObject {
 
     @Override
     public String toString() {
-        return "Dobrodošli " + name + " u igru! Odabrali ste temu: " + theme + ".";
+        return "Dobrodošli u igru " + name + "! Odabrali ste temu: " + theme + ".";
     }
 }

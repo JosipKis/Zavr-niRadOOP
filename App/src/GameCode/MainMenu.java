@@ -68,20 +68,24 @@ public class MainMenu extends JPanel {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     String name = nameField.getText();
-                    if (name.equals("")){
+                    if (name.isEmpty()) {
                         JOptionPane.showMessageDialog(null, "Molimo unesite svoje ime!", "Greška", JOptionPane.ERROR_MESSAGE);
                         return;
                     }
+
                     String theme = (String) comboBox.getSelectedItem();
-                    if (theme == null){
+                    if (theme == null) {
                         JOptionPane.showMessageDialog(null, "Molimo odaberite temu igre!", "Greška", JOptionPane.ERROR_MESSAGE);
                         return;
                     }
-                    MainMenuEvent mme = new MainMenuEvent(this, name, theme);
+
+                    MainMenuEvent mme = new MainMenuEvent(this, theme, name);
                     mainMenuListener.startGameEventOccured(mme);
+
                     GameArea gameArea = new GameArea();
                     JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(MainMenu.this);
                     frame.getContentPane().removeAll();
+                    frame.getContentPane().add(gameArea);
                     frame.repaint();
                     frame.revalidate();
                 }
