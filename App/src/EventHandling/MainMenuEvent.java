@@ -1,11 +1,11 @@
-package GameCode;
+package EventHandling;
 
 import java.util.EventObject;
 
 public class MainMenuEvent extends EventObject {
 
-    private String theme;
-    private String name;
+    private static String theme;
+    private static String name;
 
     /**
      * Constructs a prototypical Event.
@@ -19,11 +19,11 @@ public class MainMenuEvent extends EventObject {
         this.name = name;
     }
 
-    public String getTheme() {
+    public static String getTheme() {
         return theme;
     }
 
-    public String getName() {
+    public static String getName() {
         return name;
     }
 
