@@ -33,11 +33,13 @@ public class GameArea extends JPanel {
         fiftyFifty = new JButton("50:50");
         skipQuestion = new JButton("Preskoči pitanje");
         changeQuestion = new JButton("Promijeni pitanje");
+        Font font = new Font("Comic Sans", Font.BOLD, 12);
         questionArea = new JTextArea(15, 60);
+        questionArea.setFont(font);
         setQuestionArea(questions.getQuestion());
         questionArea.setEditable(false);
         questionArea.setBorder(BorderFactory.createEtchedBorder());
-
+        System.out.println(questions.getCorrectAnswer()); // delete this; just for testing
     }
 
     private void componentLayout(){

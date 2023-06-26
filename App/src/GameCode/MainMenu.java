@@ -15,6 +15,7 @@ public class MainMenu extends JPanel {
     private String[] gameThemes = {"Sport", "Video Igre"};
     private JTextField nameField;
     private MainMenuListener mainMenuListener;
+    private static String theme;
 
     public MainMenu() {
         createComponents();
@@ -75,7 +76,7 @@ public class MainMenu extends JPanel {
                         return;
                     }
 
-                    String theme = (String) comboBox.getSelectedItem();
+                    theme = (String) comboBox.getSelectedItem();
                     if (theme == null) {
                         JOptionPane.showMessageDialog(null, "Molimo odaberite temu igre!", "Greška", JOptionPane.ERROR_MESSAGE);
                         return;
@@ -95,5 +96,7 @@ public class MainMenu extends JPanel {
         }
     }
 
-
+    public static String getTheme() {
+        return theme;
+    }
 }
