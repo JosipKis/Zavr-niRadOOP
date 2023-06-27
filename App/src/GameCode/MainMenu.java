@@ -16,6 +16,7 @@ public class MainMenu extends JPanel {
     private JTextField nameField;
     private MainMenuListener mainMenuListener;
     private static String theme;
+    private GameArea gameArea;
 
     public MainMenu() {
         createComponents();
@@ -85,12 +86,17 @@ public class MainMenu extends JPanel {
                     MainMenuEvent mme = new MainMenuEvent(this, theme, name);
                     mainMenuListener.startGameEventOccured(mme);
 
-                    GameArea gameArea = new GameArea();
+                    gameArea = new GameArea();
                     JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(MainMenu.this);
                     frame.getContentPane().removeAll();
                     frame.getContentPane().add(gameArea);
                     frame.repaint();
                     frame.revalidate();
+                    gameArea.setGameAreaListener(event -> {
+                        String answer = event.getAnswer();
+                        System.out.println("Selected answer: "+ answer);
+                    });
+                    gameArea.activateGameArea();
                 }
             });
         }

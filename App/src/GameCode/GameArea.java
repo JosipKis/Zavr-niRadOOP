@@ -1,9 +1,13 @@
 package GameCode;
 
+import EventHandling.GameAreaEvent;
+import EventHandling.GameAreaListener;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class GameArea extends JPanel {
 
@@ -17,6 +21,7 @@ public class GameArea extends JPanel {
     private JButton changeQuestion;
     private JTextArea questionArea;
     private Questions questions;
+    private GameAreaListener gal;
 
     public GameArea(){
         createComponents();
@@ -40,6 +45,7 @@ public class GameArea extends JPanel {
         questionArea.setEditable(false);
         questionArea.setBorder(BorderFactory.createEtchedBorder());
         System.out.println(questions.getCorrectAnswer()); // delete this; just for testing
+        activateGameArea();
     }
 
     private void componentLayout(){
@@ -67,6 +73,83 @@ public class GameArea extends JPanel {
 
     public void setQuestionArea(String question){
         questionArea.setText(question);
+    }
+
+    public void setGameAreaListener(GameAreaListener gal){
+        this.gal = gal;
+    }
+
+    public void activateGameArea(){
+        if (gal != null){
+            answerA.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    String answer = answerA.getText();
+                    if (answer.equals(questions.getCorrectAnswer())){
+                        JButton srcBtn = (JButton) e.getSource();
+                        srcBtn.setBackground(Color.GREEN);
+                        JOptionPane.showMessageDialog(null, "Točan odgovor!", "Bravo!", JOptionPane.INFORMATION_MESSAGE);
+                    }else {
+                        JButton srcBtn = (JButton) e.getSource();
+                        srcBtn.setBackground(Color.RED);
+                        JOptionPane.showMessageDialog(null, "Netočan odgovor", "Netočno...", JOptionPane.ERROR_MESSAGE);
+                    }
+                    GameAreaEvent gae = new GameAreaEvent(this, answer);
+                    gal.answerBtnPressed(gae);
+                }
+            });
+            answerB.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    String answer = answerB.getText();
+                    if (answer.equals(questions.getCorrectAnswer())){
+                        JButton srcBtn = (JButton) e.getSource();
+                        srcBtn.setBackground(Color.GREEN);
+                        JOptionPane.showMessageDialog(null, "Točan odgovor!", "Bravo!", JOptionPane.INFORMATION_MESSAGE);
+                    }else {
+                        JButton srcBtn = (JButton) e.getSource();
+                        srcBtn.setBackground(Color.RED);
+                        JOptionPane.showMessageDialog(null, "Netočan odgovor", "Netočno...", JOptionPane.ERROR_MESSAGE);
+                    }
+                    GameAreaEvent gae = new GameAreaEvent(this, answer);
+                    gal.answerBtnPressed(gae);
+                }
+            });
+            answerC.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    String answer = answerC.getText();
+                    if (answer.equals(questions.getCorrectAnswer())){
+                        JButton srcBtn = (JButton) e.getSource();
+                        srcBtn.setBackground(Color.GREEN);
+                        JOptionPane.showMessageDialog(null, "Točan odgovor!", "Bravo!", JOptionPane.INFORMATION_MESSAGE);
+                    }else {
+                        JButton srcBtn = (JButton) e.getSource();
+                        srcBtn.setBackground(Color.RED);
+                        JOptionPane.showMessageDialog(null, "Netočan odgovor", "Netočno...", JOptionPane.ERROR_MESSAGE);
+                    }
+                    GameAreaEvent gae = new GameAreaEvent(this, answer);
+                    gal.answerBtnPressed(gae);
+                }
+            });
+            answerD.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    String answer = answerD.getText();
+                    if (answer.equals(questions.getCorrectAnswer())){
+                        JButton srcBtn = (JButton) e.getSource();
+                        srcBtn.setBackground(Color.GREEN);
+                        JOptionPane.showMessageDialog(null, "Točan odgovor!", "Bravo!", JOptionPane.INFORMATION_MESSAGE);
+                    }else {
+                        JButton srcBtn = (JButton) e.getSource();
+                        srcBtn.setBackground(Color.RED);
+                        JOptionPane.showMessageDialog(null, "Netočan odgovor", "Netočno...", JOptionPane.ERROR_MESSAGE);
+                    }
+                    GameAreaEvent gae = new GameAreaEvent(this, answer);
+                    gal.answerBtnPressed(gae);
+                }
+            });
+        }
     }
 
 }

@@ -4,8 +4,8 @@ import java.util.EventObject;
 
 public class MainMenuEvent extends EventObject {
 
-    private static String theme;
-    private static String name;
+    private String theme;
+    private String name;
 
     /**
      * Constructs a prototypical Event.
@@ -19,11 +19,11 @@ public class MainMenuEvent extends EventObject {
         this.name = name;
     }
 
-    public static String getTheme() {
+    public  String getTheme() {
         return theme;
     }
 
-    public static String getName() {
+    public  String getName() {
         return name;
     }
 
