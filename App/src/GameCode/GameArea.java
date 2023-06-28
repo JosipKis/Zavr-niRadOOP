@@ -30,6 +30,7 @@ public class GameArea extends JPanel {
 
     private void createComponents(){
         questions = new Questions();
+        questions.rndQuestionSelector();
         answerA = new JButton(questions.getAnswA());
         answerB = new JButton(questions.getAnswB());
         answerC = new JButton(questions.getAnswC());
@@ -89,6 +90,13 @@ public class GameArea extends JPanel {
                         JButton srcBtn = (JButton) e.getSource();
                         srcBtn.setBackground(Color.GREEN);
                         JOptionPane.showMessageDialog(null, "Točan odgovor!", "Bravo!", JOptionPane.INFORMATION_MESSAGE);
+                        questions.rndQuestionSelector();
+                        setQuestionArea(questions.getQuestion());
+                        answerA.setText(questions.getAnswA());
+                        answerB.setText(questions.getAnswB());
+                        answerC.setText(questions.getAnswC());
+                        answerD.setText(questions.getAnswD());
+                        srcBtn.setBackground(null);
                     }else {
                         JButton srcBtn = (JButton) e.getSource();
                         srcBtn.setBackground(Color.RED);
@@ -106,6 +114,13 @@ public class GameArea extends JPanel {
                         JButton srcBtn = (JButton) e.getSource();
                         srcBtn.setBackground(Color.GREEN);
                         JOptionPane.showMessageDialog(null, "Točan odgovor!", "Bravo!", JOptionPane.INFORMATION_MESSAGE);
+                        questions.rndQuestionSelector();
+                        setQuestionArea(questions.getQuestion());
+                        answerA.setText(questions.getAnswA());
+                        answerB.setText(questions.getAnswB());
+                        answerC.setText(questions.getAnswC());
+                        answerD.setText(questions.getAnswD());
+                        srcBtn.setBackground(null);
                     }else {
                         JButton srcBtn = (JButton) e.getSource();
                         srcBtn.setBackground(Color.RED);
@@ -123,6 +138,13 @@ public class GameArea extends JPanel {
                         JButton srcBtn = (JButton) e.getSource();
                         srcBtn.setBackground(Color.GREEN);
                         JOptionPane.showMessageDialog(null, "Točan odgovor!", "Bravo!", JOptionPane.INFORMATION_MESSAGE);
+                        questions.rndQuestionSelector();
+                        setQuestionArea(questions.getQuestion());
+                        answerA.setText(questions.getAnswA());
+                        answerB.setText(questions.getAnswB());
+                        answerC.setText(questions.getAnswC());
+                        answerD.setText(questions.getAnswD());
+                        srcBtn.setBackground(null);
                     }else {
                         JButton srcBtn = (JButton) e.getSource();
                         srcBtn.setBackground(Color.RED);
@@ -140,6 +162,13 @@ public class GameArea extends JPanel {
                         JButton srcBtn = (JButton) e.getSource();
                         srcBtn.setBackground(Color.GREEN);
                         JOptionPane.showMessageDialog(null, "Točan odgovor!", "Bravo!", JOptionPane.INFORMATION_MESSAGE);
+                        questions.rndQuestionSelector();
+                        setQuestionArea(questions.getQuestion());
+                        answerA.setText(questions.getAnswA());
+                        answerB.setText(questions.getAnswB());
+                        answerC.setText(questions.getAnswC());
+                        answerD.setText(questions.getAnswD());
+                        srcBtn.setBackground(null);
                     }else {
                         JButton srcBtn = (JButton) e.getSource();
                         srcBtn.setBackground(Color.RED);
@@ -150,6 +179,7 @@ public class GameArea extends JPanel {
                 }
             });
         }
+
     }
 
 }
