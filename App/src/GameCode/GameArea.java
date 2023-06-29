@@ -22,6 +22,7 @@ public class GameArea extends JPanel {
     private JTextArea questionArea;
     private Questions questions;
     private GameAreaListener gal;
+    private GameOver gameOver;
 
     public GameArea(){
         createComponents();
@@ -101,6 +102,12 @@ public class GameArea extends JPanel {
                         JButton srcBtn = (JButton) e.getSource();
                         srcBtn.setBackground(Color.RED);
                         JOptionPane.showMessageDialog(null, "Netočan odgovor", "Netočno...", JOptionPane.ERROR_MESSAGE);
+                        gameOver = new GameOver();
+                        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(GameArea.this);
+                        frame.getContentPane().removeAll();
+                        frame.getContentPane().add(gameOver);
+                        frame.repaint();
+                        frame.revalidate();
                     }
                     GameAreaEvent gae = new GameAreaEvent(this, answer);
                     gal.answerBtnPressed(gae);
@@ -125,6 +132,12 @@ public class GameArea extends JPanel {
                         JButton srcBtn = (JButton) e.getSource();
                         srcBtn.setBackground(Color.RED);
                         JOptionPane.showMessageDialog(null, "Netočan odgovor", "Netočno...", JOptionPane.ERROR_MESSAGE);
+                        gameOver = new GameOver();
+                        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(GameArea.this);
+                        frame.getContentPane().removeAll();
+                        frame.getContentPane().add(gameOver);
+                        frame.repaint();
+                        frame.revalidate();
                     }
                     GameAreaEvent gae = new GameAreaEvent(this, answer);
                     gal.answerBtnPressed(gae);
@@ -149,6 +162,12 @@ public class GameArea extends JPanel {
                         JButton srcBtn = (JButton) e.getSource();
                         srcBtn.setBackground(Color.RED);
                         JOptionPane.showMessageDialog(null, "Netočan odgovor", "Netočno...", JOptionPane.ERROR_MESSAGE);
+                        gameOver = new GameOver();
+                        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(GameArea.this);
+                        frame.getContentPane().removeAll();
+                        frame.getContentPane().add(gameOver);
+                        frame.repaint();
+                        frame.revalidate();
                     }
                     GameAreaEvent gae = new GameAreaEvent(this, answer);
                     gal.answerBtnPressed(gae);
@@ -173,6 +192,12 @@ public class GameArea extends JPanel {
                         JButton srcBtn = (JButton) e.getSource();
                         srcBtn.setBackground(Color.RED);
                         JOptionPane.showMessageDialog(null, "Netočan odgovor", "Netočno...", JOptionPane.ERROR_MESSAGE);
+                        gameOver = new GameOver();
+                        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(GameArea.this);
+                        frame.getContentPane().removeAll();
+                        frame.getContentPane().add(gameOver);
+                        frame.repaint();
+                        frame.revalidate();
                     }
                     GameAreaEvent gae = new GameAreaEvent(this, answer);
                     gal.answerBtnPressed(gae);

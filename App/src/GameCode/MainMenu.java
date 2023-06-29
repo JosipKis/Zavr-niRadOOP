@@ -94,7 +94,7 @@ public class MainMenu extends JPanel {
                     frame.revalidate();
                     gameArea.setGameAreaListener(event -> {
                         String answer = event.getAnswer();
-                        System.out.println("Selected answer: "+ answer);
+                        System.out.println("Selected answer: "+ answer); // delete this, just for testing
                     });
                     gameArea.activateGameArea();
                 }
