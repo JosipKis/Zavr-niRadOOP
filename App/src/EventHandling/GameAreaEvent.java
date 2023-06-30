@@ -17,6 +17,10 @@ public class GameAreaEvent extends EventObject{
         this.answer = answer;
     }
 
+    public GameAreaEvent(Object source){
+        super(source);
+    }
+
     public String getAnswer() {
         return answer;
     }

@@ -20,14 +20,14 @@ public class GameOver extends JPanel {
     }
 
     private void createComponents(){
-        playAgainBtn = new JButton();
-        playAgainBtn.setSize(200, 75);
-        mainMenuBtn = new JButton();
-        mainMenuBtn.setSize(200, 75);
-        printResultsBtn = new JButton();
-        printResultsBtn.setSize(200, 75);
+        playAgainBtn = new JButton("Igraj Opet");
+        playAgainBtn.setFont(new Font("Helvetica", Font.BOLD, 25));
+        mainMenuBtn = new JButton("Glavni Izbronik");
+        mainMenuBtn.setFont(new Font("Helvetica", Font.BOLD, 25));
+        printResultsBtn = new JButton("Printaj Rezultat");
+        printResultsBtn.setFont(new Font("Helvetica", Font.BOLD, 25));
         krajIgreTxt =  new JLabel("KRAJ IGRE!");
-        fontZaKrajIgreTxt  = new Font("Comic Sans", Font.BOLD, 50);
+        fontZaKrajIgreTxt  = new Font("Comic Sans", Font.BOLD, 75);
         krajIgreTxt.setFont(fontZaKrajIgreTxt);
         setVisible(true);
     }
@@ -35,8 +35,8 @@ public class GameOver extends JPanel {
     private void componentLayout(){
         setLayout(new MigLayout());
         add(krajIgreTxt, "wrap");
-        add(playAgainBtn, "wrap");
-        add(mainMenuBtn, "wrap");
-        add(printResultsBtn);
+        add(playAgainBtn, "wrap, center, height 75, width 250");
+        add(mainMenuBtn, "wrap, center, height 75, width 250");
+        add(printResultsBtn, "center, height 75, width 250");
     }
 }

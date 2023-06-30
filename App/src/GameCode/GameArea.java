@@ -110,7 +110,7 @@ public class GameArea extends JPanel {
                         frame.revalidate();
                     }
                     GameAreaEvent gae = new GameAreaEvent(this, answer);
-                    gal.answerBtnPressed(gae);
+                    gal.gameAreaBtnPressed(gae);
                 }
             });
             answerB.addActionListener(new ActionListener() {
@@ -140,7 +140,7 @@ public class GameArea extends JPanel {
                         frame.revalidate();
                     }
                     GameAreaEvent gae = new GameAreaEvent(this, answer);
-                    gal.answerBtnPressed(gae);
+                    gal.gameAreaBtnPressed(gae);
                 }
             });
             answerC.addActionListener(new ActionListener() {
@@ -170,7 +170,7 @@ public class GameArea extends JPanel {
                         frame.revalidate();
                     }
                     GameAreaEvent gae = new GameAreaEvent(this, answer);
-                    gal.answerBtnPressed(gae);
+                    gal.gameAreaBtnPressed(gae);
                 }
             });
             answerD.addActionListener(new ActionListener() {
@@ -200,7 +200,24 @@ public class GameArea extends JPanel {
                         frame.revalidate();
                     }
                     GameAreaEvent gae = new GameAreaEvent(this, answer);
-                    gal.answerBtnPressed(gae);
+                    gal.gameAreaBtnPressed(gae);
+                }
+            });
+            exitGame.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    Object[] options = new Object[]{"Da", "Ne"};
+                    int option = JOptionPane.showOptionDialog(null, "Želite li napustiti igru "+ MainMenu.getThisName() +"?", "Voditelj Igre", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                    if (option == 0) {
+                        gameOver = new GameOver();
+                        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(GameArea.this);
+                        frame.getContentPane().removeAll();
+                        frame.getContentPane().add(gameOver);
+                        frame.repaint();
+                        frame.revalidate();
+                        GameAreaEvent gae = new GameAreaEvent(this);
+                        gal.gameAreaBtnPressed(gae);
+                    }
                 }
             });
         }

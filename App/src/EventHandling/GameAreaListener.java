@@ -4,5 +4,5 @@ import java.util.EventListener;
 
 public interface GameAreaListener extends EventListener{
 
-    void answerBtnPressed(GameAreaEvent event);
+    void gameAreaBtnPressed(GameAreaEvent event);
 }

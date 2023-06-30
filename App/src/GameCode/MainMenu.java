@@ -16,6 +16,7 @@ public class MainMenu extends JPanel {
     private JTextField nameField;
     private MainMenuListener mainMenuListener;
     private static String theme;
+    private static String name;
     private GameArea gameArea;
 
     public MainMenu() {
@@ -71,7 +72,7 @@ public class MainMenu extends JPanel {
             startButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    String name = nameField.getText();
+                    name = nameField.getText();
                     if (name.isEmpty()) {
                         JOptionPane.showMessageDialog(null, "Molimo unesite svoje ime!", "Greška", JOptionPane.ERROR_MESSAGE);
                         return;
@@ -104,5 +105,9 @@ public class MainMenu extends JPanel {
 
     public static String getTheme() {
         return theme;
+    }
+
+    public static String getThisName(){
+        return name;
     }
 }
