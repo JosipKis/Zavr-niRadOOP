@@ -346,6 +346,19 @@ public class GameArea extends JPanel {
                     ifChangeQuestionUsed = true;
                 }
             });
+            skipQuestion.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    questions.rndQuestionSelector();
+                    setQuestionArea(questions.getQuestion());
+                    answerA.setText(questions.getAnswA());
+                    answerB.setText(questions.getAnswB());
+                    answerC.setText(questions.getAnswC());
+                    answerD.setText(questions.getAnswD());
+                    skipQuestion.setEnabled(false);
+                    skipQuestion.setBackground(Color.red);
+                }
+            });
         }
     }
 
