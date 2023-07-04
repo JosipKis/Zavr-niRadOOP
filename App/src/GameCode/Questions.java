@@ -1,11 +1,11 @@
 package GameCode;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Questions {
 
+    private int cntr = 0;
     private String question;
     private String answA;
     private String answB;
@@ -46,6 +46,10 @@ public class Questions {
     }
 
     public int rndQuestionSelector() {
+        if (cntr < 1 && GameArea.isIfChangeQuestionUsed() && noRepeats.size() > 0) {
+            noRepeats.remove(noRepeats.size() - 1);
+            cntr++;
+        }
         int rnd;
         if (theme.equals("Sport")) {
             while (true){
@@ -121,5 +125,9 @@ public class Questions {
 
     public void setCurrentMoney(String currentMoney) {
         this.currentMoney = currentMoney;
+    }
+
+    public void setCntr(int cntr) {
+        this.cntr = cntr;
     }
 }

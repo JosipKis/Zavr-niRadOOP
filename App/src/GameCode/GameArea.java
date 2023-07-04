@@ -2,14 +2,14 @@ package GameCode;
 
 import EventHandling.GameAreaEvent;
 import EventHandling.GameAreaListener;
-import EventHandling.GameOverEvent;
-import EventHandling.GameOverListener;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class GameArea extends JPanel {
 
@@ -28,6 +28,7 @@ public class GameArea extends JPanel {
     private GameAreaListener gal;
     private GameOver gameOver;
     private static String moneyWon;
+    private static boolean ifChangeQuestionUsed;
 
     public GameArea(){
         createComponents();
@@ -44,8 +45,11 @@ public class GameArea extends JPanel {
         answerD = new JButton(questions.getAnswD());
         exitGame = new JButton("Izađi iz igre");
         fiftyFifty = new JButton("50:50");
+        fiftyFifty.setBackground(Color.yellow);
         skipQuestion = new JButton("Preskoči pitanje");
+        skipQuestion.setBackground(Color.yellow);
         changeQuestion = new JButton("Promijeni pitanje");
+        changeQuestion.setBackground(Color.yellow);
         questionArea = new JTextArea();
         questionArea.setColumns(60);
         questionArea.setRows(15);
@@ -59,7 +63,8 @@ public class GameArea extends JPanel {
         questionCounter = new JTextArea("1 / 15");
         System.out.println(questions.getCorrectAnswer()); // delete this; just for testing
         gameOver = new GameOver();
-
+        questions.setCntr(0);
+        ifChangeQuestionUsed = false;
     }
 
     private void componentLayout(){
@@ -67,7 +72,7 @@ public class GameArea extends JPanel {
         JPanel powerUps = new JPanel(new MigLayout());
         powerUps.setBorder(BorderFactory.createEtchedBorder());
         powerUps.add(exitGame);
-        powerUps.add(Box.createHorizontalStrut(225));
+        powerUps.add(Box.createHorizontalStrut(305));
         powerUps.add(fiftyFifty);
         powerUps.add(skipQuestion);
         powerUps.add(changeQuestion);
@@ -111,6 +116,7 @@ public class GameArea extends JPanel {
     }
 
     public void activateGameArea(){
+
         if (gal != null){
             answerA.addActionListener(new ActionListener() {
                 @Override
@@ -132,6 +138,10 @@ public class GameArea extends JPanel {
                         }
                         setMoneyCounter(questions.getCurrentMoney());
                         setQuestionCounter(questions.getNumOfQuestion());
+                        answerA.setEnabled(true);
+                        answerB.setEnabled(true);
+                        answerC.setEnabled(true);
+                        answerD.setEnabled(true);
                     }else {
                         JButton srcBtn = (JButton) e.getSource();
                         srcBtn.setBackground(Color.RED);
@@ -170,6 +180,10 @@ public class GameArea extends JPanel {
                         }
                         setMoneyCounter(questions.getCurrentMoney());
                         setQuestionCounter(questions.getNumOfQuestion());
+                        answerA.setEnabled(true);
+                        answerB.setEnabled(true);
+                        answerC.setEnabled(true);
+                        answerD.setEnabled(true);
                     }else {
                         JButton srcBtn = (JButton) e.getSource();
                         srcBtn.setBackground(Color.RED);
@@ -208,6 +222,10 @@ public class GameArea extends JPanel {
                         }
                         setMoneyCounter(questions.getCurrentMoney());
                         setQuestionCounter(questions.getNumOfQuestion());
+                        answerA.setEnabled(true);
+                        answerB.setEnabled(true);
+                        answerC.setEnabled(true);
+                        answerD.setEnabled(true);
                     }else {
                         JButton srcBtn = (JButton) e.getSource();
                         srcBtn.setBackground(Color.RED);
@@ -246,6 +264,10 @@ public class GameArea extends JPanel {
                         }
                         setMoneyCounter(questions.getCurrentMoney());
                         setQuestionCounter(questions.getNumOfQuestion());
+                        answerA.setEnabled(true);
+                        answerB.setEnabled(true);
+                        answerC.setEnabled(true);
+                        answerD.setEnabled(true);
                     }else {
                         JButton srcBtn = (JButton) e.getSource();
                         srcBtn.setBackground(Color.RED);
@@ -284,7 +306,46 @@ public class GameArea extends JPanel {
                     }
                 }
             });
-
+            fiftyFifty.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    ArrayList<JButton> lstOfBtns = new ArrayList<>();
+                    lstOfBtns.add(answerA);
+                    lstOfBtns.add(answerB);
+                    lstOfBtns.add(answerC);
+                    lstOfBtns.add(answerD);
+                    int untilTwo = 0;
+                    ArrayList<Integer> btns = new ArrayList<>();
+                    while (untilTwo < 2){
+                        int rndIndx = ThreadLocalRandom.current().nextInt(1, 4);
+                        String selBtn = lstOfBtns.get(rndIndx).getText();
+                        if (!selBtn.equals(questions.getCorrectAnswer())){
+                            if(!btns.contains(rndIndx)){
+                                lstOfBtns.get(rndIndx).setEnabled(false);
+                                untilTwo++;
+                            }
+                        }
+                        btns.add(rndIndx);
+                    }
+                    fiftyFifty.setEnabled(false);
+                    fiftyFifty.setBackground(Color.red);
+                    fiftyFifty.setForeground(Color.black);
+                }
+            });
+            changeQuestion.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    questions.rndQuestionSelector();
+                    setQuestionArea(questions.getQuestion());
+                    answerA.setText(questions.getAnswA());
+                    answerB.setText(questions.getAnswB());
+                    answerC.setText(questions.getAnswC());
+                    answerD.setText(questions.getAnswD());
+                    changeQuestion.setEnabled(false);
+                    changeQuestion.setBackground(Color.red);
+                    ifChangeQuestionUsed = true;
+                }
+            });
         }
     }
 
@@ -300,4 +361,7 @@ public class GameArea extends JPanel {
         return moneyWon + "€";
     }
 
+    public static boolean isIfChangeQuestionUsed() {
+        return ifChangeQuestionUsed;
+    }
 }
