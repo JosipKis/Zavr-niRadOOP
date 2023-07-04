@@ -2,6 +2,8 @@ package GameCode;
 
 import EventHandling.GameAreaEvent;
 import EventHandling.GameAreaListener;
+import EventHandling.GameOverEvent;
+import EventHandling.GameOverListener;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
@@ -20,13 +22,17 @@ public class GameArea extends JPanel {
     private JButton skipQuestion;
     private JButton changeQuestion;
     private JTextArea questionArea;
-    private Questions questions;
+    private JTextArea moneyCounter;
+    private JTextArea questionCounter;
+    private static Questions questions;
     private GameAreaListener gal;
     private GameOver gameOver;
+    private static String moneyWon;
 
     public GameArea(){
         createComponents();
         componentLayout();
+
     }
 
     private void createComponents(){
@@ -40,14 +46,20 @@ public class GameArea extends JPanel {
         fiftyFifty = new JButton("50:50");
         skipQuestion = new JButton("Preskoči pitanje");
         changeQuestion = new JButton("Promijeni pitanje");
-        Font font = new Font("Comic Sans", Font.BOLD, 12);
-        questionArea = new JTextArea(15, 60);
-        questionArea.setFont(font);
+        questionArea = new JTextArea();
+        questionArea.setColumns(60);
+        questionArea.setRows(15);
+        questionArea.setLineWrap(true);
+        questionArea.setWrapStyleWord(true);
+        questionArea.setFont(questionArea.getFont().deriveFont(36f));
         setQuestionArea(questions.getQuestion());
         questionArea.setEditable(false);
         questionArea.setBorder(BorderFactory.createEtchedBorder());
+        moneyCounter = new JTextArea("0€");
+        questionCounter = new JTextArea("1 / 15");
         System.out.println(questions.getCorrectAnswer()); // delete this; just for testing
-        activateGameArea();
+        gameOver = new GameOver();
+
     }
 
     private void componentLayout(){
@@ -60,10 +72,19 @@ public class GameArea extends JPanel {
         powerUps.add(skipQuestion);
         powerUps.add(changeQuestion);
         add(powerUps, "north, aligny top");
-        add(Box.createVerticalStrut(50), "wrap");
+        add(Box.createVerticalStrut(30), "wrap");
         JPanel questionZone = new JPanel(new MigLayout());
-        questionZone.add(questionArea);
-        add(questionZone, "center");
+        questionZone.add(questionArea, "grow, height 200, width 500");
+        add(questionZone, "center, grow");
+        add(Box.createHorizontalStrut(70));
+        JPanel trackers = new JPanel(new MigLayout());
+        trackers.add(new JLabel("Broj Pitanja: "));
+        trackers.add(questionCounter, "height 14, width 40");
+        trackers.add(new JLabel("\n"), "wrap");
+        trackers.add((new JLabel("Osvojeno: ")));
+        trackers.add(moneyCounter, "height 14, width 60");
+        add(trackers);
+        add(Box.createVerticalStrut(20), "wrap");
         JPanel answers = new JPanel(new MigLayout("center"));
         answers.add(answerA, "height 75, width 200");
         answers.add(answerB, "height 75, width 200");
@@ -75,6 +96,14 @@ public class GameArea extends JPanel {
 
     public void setQuestionArea(String question){
         questionArea.setText(question);
+    }
+
+    private void setMoneyCounter(String money){
+        moneyCounter.setText(questions.getCurrentMoney() +"€");
+    }
+
+    private void setQuestionCounter(String question){
+        questionCounter.setText(questions.getNumOfQuestion() +" / 15");
     }
 
     public void setGameAreaListener(GameAreaListener gal){
@@ -90,7 +119,7 @@ public class GameArea extends JPanel {
                     if (answer.equals(questions.getCorrectAnswer())){
                         JButton srcBtn = (JButton) e.getSource();
                         srcBtn.setBackground(Color.GREEN);
-                        JOptionPane.showMessageDialog(null, "Točan odgovor!", "Bravo!", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Točan odgovor!", "Game Host", JOptionPane.INFORMATION_MESSAGE);
                         questions.rndQuestionSelector();
                         setQuestionArea(questions.getQuestion());
                         answerA.setText(questions.getAnswA());
@@ -98,16 +127,24 @@ public class GameArea extends JPanel {
                         answerC.setText(questions.getAnswC());
                         answerD.setText(questions.getAnswD());
                         srcBtn.setBackground(null);
+                        if (!answer.equals("null")){
+                            questions.setCurrentMoney(questions.moneyPoolList[questions.noRepeats.size()-2]);
+                        }
+                        setMoneyCounter(questions.getCurrentMoney());
+                        setQuestionCounter(questions.getNumOfQuestion());
                     }else {
                         JButton srcBtn = (JButton) e.getSource();
                         srcBtn.setBackground(Color.RED);
-                        JOptionPane.showMessageDialog(null, "Netočan odgovor", "Netočno...", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Nažalost "+ MainMenu.getThisName() +", odgovor nije točan.", "Game Host", JOptionPane.ERROR_MESSAGE);
                         gameOver = new GameOver();
+                        activateGameOverInGameArea();
                         JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(GameArea.this);
                         frame.getContentPane().removeAll();
                         frame.getContentPane().add(gameOver);
                         frame.repaint();
                         frame.revalidate();
+                        System.out.println(questions.getCurrentMoney() +"€"); // delete this, just for testing
+                        moneyWon = questions.getCurrentMoney() +"€";
                     }
                     GameAreaEvent gae = new GameAreaEvent(this, answer);
                     gal.gameAreaBtnPressed(gae);
@@ -120,7 +157,7 @@ public class GameArea extends JPanel {
                     if (answer.equals(questions.getCorrectAnswer())){
                         JButton srcBtn = (JButton) e.getSource();
                         srcBtn.setBackground(Color.GREEN);
-                        JOptionPane.showMessageDialog(null, "Točan odgovor!", "Bravo!", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Točan odgovor!", "Game Host", JOptionPane.INFORMATION_MESSAGE);
                         questions.rndQuestionSelector();
                         setQuestionArea(questions.getQuestion());
                         answerA.setText(questions.getAnswA());
@@ -128,16 +165,24 @@ public class GameArea extends JPanel {
                         answerC.setText(questions.getAnswC());
                         answerD.setText(questions.getAnswD());
                         srcBtn.setBackground(null);
+                        if (!answer.equals("null")){
+                            questions.setCurrentMoney(questions.moneyPoolList[questions.noRepeats.size()-2]);
+                        }
+                        setMoneyCounter(questions.getCurrentMoney());
+                        setQuestionCounter(questions.getNumOfQuestion());
                     }else {
                         JButton srcBtn = (JButton) e.getSource();
                         srcBtn.setBackground(Color.RED);
-                        JOptionPane.showMessageDialog(null, "Netočan odgovor", "Netočno...", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Nažalost "+ MainMenu.getThisName() +", odgovor nije točan.", "Game Host", JOptionPane.ERROR_MESSAGE);
                         gameOver = new GameOver();
+                        activateGameOverInGameArea();
                         JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(GameArea.this);
                         frame.getContentPane().removeAll();
                         frame.getContentPane().add(gameOver);
                         frame.repaint();
                         frame.revalidate();
+                        System.out.println(questions.getCurrentMoney() +"€"); // delete this, just for testing
+                        moneyWon = questions.getCurrentMoney() +"€";
                     }
                     GameAreaEvent gae = new GameAreaEvent(this, answer);
                     gal.gameAreaBtnPressed(gae);
@@ -150,7 +195,7 @@ public class GameArea extends JPanel {
                     if (answer.equals(questions.getCorrectAnswer())){
                         JButton srcBtn = (JButton) e.getSource();
                         srcBtn.setBackground(Color.GREEN);
-                        JOptionPane.showMessageDialog(null, "Točan odgovor!", "Bravo!", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Točan odgovor!", "Game Host", JOptionPane.INFORMATION_MESSAGE);
                         questions.rndQuestionSelector();
                         setQuestionArea(questions.getQuestion());
                         answerA.setText(questions.getAnswA());
@@ -158,16 +203,24 @@ public class GameArea extends JPanel {
                         answerC.setText(questions.getAnswC());
                         answerD.setText(questions.getAnswD());
                         srcBtn.setBackground(null);
+                        if (!answer.equals("null")){
+                            questions.setCurrentMoney(questions.moneyPoolList[questions.noRepeats.size()-2]);
+                        }
+                        setMoneyCounter(questions.getCurrentMoney());
+                        setQuestionCounter(questions.getNumOfQuestion());
                     }else {
                         JButton srcBtn = (JButton) e.getSource();
                         srcBtn.setBackground(Color.RED);
-                        JOptionPane.showMessageDialog(null, "Netočan odgovor", "Netočno...", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Nažalost "+ MainMenu.getThisName() +", odgovor nije točan.", "Game Host", JOptionPane.ERROR_MESSAGE);
                         gameOver = new GameOver();
+                        activateGameOverInGameArea();
                         JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(GameArea.this);
                         frame.getContentPane().removeAll();
                         frame.getContentPane().add(gameOver);
                         frame.repaint();
                         frame.revalidate();
+                        System.out.println(questions.getCurrentMoney() +"€"); // delete this, just for testing
+                        moneyWon = questions.getCurrentMoney() +"€";
                     }
                     GameAreaEvent gae = new GameAreaEvent(this, answer);
                     gal.gameAreaBtnPressed(gae);
@@ -180,7 +233,7 @@ public class GameArea extends JPanel {
                     if (answer.equals(questions.getCorrectAnswer())){
                         JButton srcBtn = (JButton) e.getSource();
                         srcBtn.setBackground(Color.GREEN);
-                        JOptionPane.showMessageDialog(null, "Točan odgovor!", "Bravo!", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Točan odgovor!", "Game Host", JOptionPane.INFORMATION_MESSAGE);
                         questions.rndQuestionSelector();
                         setQuestionArea(questions.getQuestion());
                         answerA.setText(questions.getAnswA());
@@ -188,16 +241,24 @@ public class GameArea extends JPanel {
                         answerC.setText(questions.getAnswC());
                         answerD.setText(questions.getAnswD());
                         srcBtn.setBackground(null);
+                        if (!answer.equals("null")){
+                            questions.setCurrentMoney(questions.moneyPoolList[questions.noRepeats.size()-2]);
+                        }
+                        setMoneyCounter(questions.getCurrentMoney());
+                        setQuestionCounter(questions.getNumOfQuestion());
                     }else {
                         JButton srcBtn = (JButton) e.getSource();
                         srcBtn.setBackground(Color.RED);
-                        JOptionPane.showMessageDialog(null, "Netočan odgovor", "Netočno...", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Nažalost "+ MainMenu.getThisName() +", odgovor nije točan.", "Game Host", JOptionPane.ERROR_MESSAGE);
                         gameOver = new GameOver();
+                        activateGameOverInGameArea();
                         JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(GameArea.this);
                         frame.getContentPane().removeAll();
                         frame.getContentPane().add(gameOver);
                         frame.repaint();
                         frame.revalidate();
+                        System.out.println(questions.getCurrentMoney() +"€"); // delete this, just for testing
+                        moneyWon = questions.getCurrentMoney() +"€";
                     }
                     GameAreaEvent gae = new GameAreaEvent(this, answer);
                     gal.gameAreaBtnPressed(gae);
@@ -210,6 +271,7 @@ public class GameArea extends JPanel {
                     int option = JOptionPane.showOptionDialog(null, "Želite li napustiti igru "+ MainMenu.getThisName() +"?", "Voditelj Igre", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
                     if (option == 0) {
                         gameOver = new GameOver();
+                        activateGameOverInGameArea();
                         JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(GameArea.this);
                         frame.getContentPane().removeAll();
                         frame.getContentPane().add(gameOver);
@@ -217,11 +279,25 @@ public class GameArea extends JPanel {
                         frame.revalidate();
                         GameAreaEvent gae = new GameAreaEvent(this);
                         gal.gameAreaBtnPressed(gae);
+                        System.out.println(questions.getCurrentMoney() +"€"); // delete this, just for testing
+                        moneyWon = questions.getCurrentMoney() +"€";
                     }
                 }
             });
-        }
 
+        }
+    }
+
+    private void activateGameOverInGameArea(){
+        gameOver.setGameOverListener(event -> {
+
+        });
+        gameOver.activateGameOver();
+    }
+
+    public static String getMoneyWon(){
+        moneyWon = questions.getCurrentMoney();
+        return moneyWon + "€";
     }
 
 }
