@@ -11,7 +11,6 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class GameOver extends JPanel {
 
@@ -116,7 +115,7 @@ public class GameOver extends JPanel {
     }
 
     private void printResultOfPreviousGame(){
-        String fileName = "rezultat";
+        String fileName = "rezultat.txt";
         String filePath = "App/src/PrintedScores/" + fileName;
         File file = new File(filePath);
         if (file.exists()) {

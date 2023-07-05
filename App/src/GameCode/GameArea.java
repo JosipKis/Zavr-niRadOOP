@@ -29,9 +29,12 @@ public class GameArea extends JPanel {
     private GameOver gameOver;
     private static String moneyWon;
     private static boolean ifChangeQuestionUsed;
-
+    private static String guaranteedMoney;
+    private JTextArea guaranteedMoneyCntr;
 
     public GameArea(){
+        guaranteedMoney = "0€";
+        moneyWon = "0€";
         createComponents();
         componentLayout();
     }
@@ -63,11 +66,16 @@ public class GameArea extends JPanel {
         questionArea.setEditable(false);
         questionArea.setBorder(BorderFactory.createEtchedBorder());
         moneyCounter = new JTextArea("0€");
+        moneyCounter.setEditable(false);
         questionCounter = new JTextArea("1 / 15");
+        questionCounter.setEditable(false);
         System.out.println(questions.getCorrectAnswer()); // delete this; just for testing
         gameOver = new GameOver();
         questions.setCntr(0);
         ifChangeQuestionUsed = false;
+        guaranteedMoney = "0€";
+        guaranteedMoneyCntr = new JTextArea("0€");
+        guaranteedMoneyCntr.setEditable(false);
     }
 
     private void componentLayout(){
@@ -91,6 +99,9 @@ public class GameArea extends JPanel {
         trackers.add(new JLabel("\n"), "wrap");
         trackers.add((new JLabel("Osvojeno: ")));
         trackers.add(moneyCounter, "height 14, width 60");
+        trackers.add(new JLabel("\n"), "wrap");
+        trackers.add(new JLabel("Garantirano    : "));
+        trackers.add(guaranteedMoneyCntr, "height 14, width 60");
         add(trackers);
         add(Box.createVerticalStrut(20), "wrap");
         JPanel answers = new JPanel(new MigLayout("center"));
@@ -138,9 +149,13 @@ public class GameArea extends JPanel {
                         if (!answer.equals("null")){
                             questions.setCurrentMoney(questions.moneyPoolList[questions.noRepeats.size()-2]);
                         }
-                        setMoneyCounter(questions.getCurrentMoney());
+                        moneyWon = questions.getCurrentMoney() +"€";
+                        setMoneyCounter(moneyWon);
                         setQuestionCounter(questions.getNumOfQuestion());
+                        guaranteedMoneyCntr.setText(setGuaranteedMoney());
+                        setGuaranteedMoney();
                         isAMillionaire();
+                        System.out.println(getMoneyWon()); // delete this, just for testing
                         answerA.setEnabled(true);
                         answerB.setEnabled(true);
                         answerC.setEnabled(true);
@@ -148,6 +163,7 @@ public class GameArea extends JPanel {
                     }else {
                         JButton srcBtn = (JButton) e.getSource();
                         srcBtn.setBackground(Color.RED);
+                        moneyWon = setGuaranteedMoney();
                         JOptionPane.showMessageDialog(null, "Nažalost "+ MainMenu.getThisName() +", odgovor nije točan.", "Game Host", JOptionPane.ERROR_MESSAGE);
                         gameOver = new GameOver();
                         activateGameOverInGameArea();
@@ -157,7 +173,6 @@ public class GameArea extends JPanel {
                         frame.repaint();
                         frame.revalidate();
                         System.out.println(questions.getCurrentMoney() +"€"); // delete this, just for testing
-                        moneyWon = questions.getCurrentMoney() +"€";
                     }
                     GameAreaEvent gae = new GameAreaEvent(this, answer);
                     gal.gameAreaBtnPressed(gae);
@@ -181,9 +196,13 @@ public class GameArea extends JPanel {
                         if (!answer.equals("null")){
                             questions.setCurrentMoney(questions.moneyPoolList[questions.noRepeats.size()-2]);
                         }
-                        setMoneyCounter(questions.getCurrentMoney());
+                        moneyWon = questions.getCurrentMoney() +"€";
+                        setMoneyCounter(moneyWon);
                         setQuestionCounter(questions.getNumOfQuestion());
+                        guaranteedMoneyCntr.setText(setGuaranteedMoney());
+                        setGuaranteedMoney();
                         isAMillionaire();
+                        System.out.println(getMoneyWon()); // delete this, just for testing
                         answerA.setEnabled(true);
                         answerB.setEnabled(true);
                         answerC.setEnabled(true);
@@ -191,6 +210,7 @@ public class GameArea extends JPanel {
                     }else {
                         JButton srcBtn = (JButton) e.getSource();
                         srcBtn.setBackground(Color.RED);
+                        moneyWon = setGuaranteedMoney();
                         JOptionPane.showMessageDialog(null, "Nažalost "+ MainMenu.getThisName() +", odgovor nije točan.", "Game Host", JOptionPane.ERROR_MESSAGE);
                         gameOver = new GameOver();
                         activateGameOverInGameArea();
@@ -200,7 +220,6 @@ public class GameArea extends JPanel {
                         frame.repaint();
                         frame.revalidate();
                         System.out.println(questions.getCurrentMoney() +"€"); // delete this, just for testing
-                        moneyWon = questions.getCurrentMoney() +"€";
                     }
                     GameAreaEvent gae = new GameAreaEvent(this, answer);
                     gal.gameAreaBtnPressed(gae);
@@ -224,9 +243,13 @@ public class GameArea extends JPanel {
                         if (!answer.equals("null")){
                             questions.setCurrentMoney(questions.moneyPoolList[questions.noRepeats.size()-2]);
                         }
-                        setMoneyCounter(questions.getCurrentMoney());
+                        moneyWon = questions.getCurrentMoney() +"€";
+                        setMoneyCounter(moneyWon);
                         setQuestionCounter(questions.getNumOfQuestion());
+                        guaranteedMoneyCntr.setText(setGuaranteedMoney());
+                        setGuaranteedMoney();
                         isAMillionaire();
+                        System.out.println(getMoneyWon()); // delete this, just for testing
                         answerA.setEnabled(true);
                         answerB.setEnabled(true);
                         answerC.setEnabled(true);
@@ -234,6 +257,7 @@ public class GameArea extends JPanel {
                     }else {
                         JButton srcBtn = (JButton) e.getSource();
                         srcBtn.setBackground(Color.RED);
+                        moneyWon = setGuaranteedMoney();
                         JOptionPane.showMessageDialog(null, "Nažalost "+ MainMenu.getThisName() +", odgovor nije točan.", "Game Host", JOptionPane.ERROR_MESSAGE);
                         gameOver = new GameOver();
                         activateGameOverInGameArea();
@@ -243,7 +267,6 @@ public class GameArea extends JPanel {
                         frame.repaint();
                         frame.revalidate();
                         System.out.println(questions.getCurrentMoney() +"€"); // delete this, just for testing
-                        moneyWon = questions.getCurrentMoney() +"€";
                     }
                     GameAreaEvent gae = new GameAreaEvent(this, answer);
                     gal.gameAreaBtnPressed(gae);
@@ -267,9 +290,13 @@ public class GameArea extends JPanel {
                         if (!answer.equals("null")){
                             questions.setCurrentMoney(questions.moneyPoolList[questions.noRepeats.size()-2]);
                         }
-                        setMoneyCounter(questions.getCurrentMoney());
+                        moneyWon = questions.getCurrentMoney() +"€";
+                        setMoneyCounter(moneyWon);
                         setQuestionCounter(questions.getNumOfQuestion());
+                        guaranteedMoneyCntr.setText(setGuaranteedMoney());
+                        setGuaranteedMoney();
                         isAMillionaire();
+                        System.out.println(getMoneyWon()); // delete this, just for testing
                         answerA.setEnabled(true);
                         answerB.setEnabled(true);
                         answerC.setEnabled(true);
@@ -277,6 +304,7 @@ public class GameArea extends JPanel {
                     }else {
                         JButton srcBtn = (JButton) e.getSource();
                         srcBtn.setBackground(Color.RED);
+                        moneyWon = setGuaranteedMoney();
                         JOptionPane.showMessageDialog(null, "Nažalost "+ MainMenu.getThisName() +", odgovor nije točan.", "Game Host", JOptionPane.ERROR_MESSAGE);
                         gameOver = new GameOver();
                         activateGameOverInGameArea();
@@ -286,7 +314,7 @@ public class GameArea extends JPanel {
                         frame.repaint();
                         frame.revalidate();
                         System.out.println(questions.getCurrentMoney() +"€"); // delete this, just for testing
-                        moneyWon = questions.getCurrentMoney() +"€";
+                        moneyWon = guaranteedMoney;
                     }
                     GameAreaEvent gae = new GameAreaEvent(this, answer);
                     gal.gameAreaBtnPressed(gae);
@@ -376,12 +404,37 @@ public class GameArea extends JPanel {
     }
 
     public static String getMoneyWon(){
-        moneyWon = questions.getCurrentMoney();
-        return moneyWon + "€";
+        return moneyWon;
     }
 
     public static boolean isIfChangeQuestionUsed() {
         return ifChangeQuestionUsed;
+    }
+
+    private String setGuaranteedMoney(){
+        switch (getMoneyWon()) {
+            case "1.000€" -> {
+                guaranteedMoney = "1.000€";
+                return guaranteedMoney;
+            }
+            case "16.000€" -> {
+                guaranteedMoney = "16.000€";
+                return guaranteedMoney;
+            }
+            case "128.000€" -> {
+                guaranteedMoney = "128.000€";
+                return guaranteedMoney;
+            }
+            case "1.000.000€" -> {
+                guaranteedMoney = "1.000.000€";
+                return guaranteedMoney;
+            }
+        }
+        return guaranteedMoney;
+    }
+
+    public void externalSetGMoney(){
+        guaranteedMoney = "0€";
     }
 
     public void isAMillionaire(){
