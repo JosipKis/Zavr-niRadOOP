@@ -119,14 +119,22 @@ public class GameOver extends JPanel {
         String fileName = "rezultat";
         String filePath = "App/src/PrintedScores/" + fileName;
         File file = new File(filePath);
-        if (file.exists()){
+        if (file.exists()) {
             int count = 1;
-            String baseName = fileName.substring(0, fileName.lastIndexOf('.'));
-            String extension = fileName.substring(fileName.lastIndexOf('.'));
+            String baseName;
+            String extension = "";
+
+            int dotIndex = fileName.lastIndexOf('.');
+            if (dotIndex != -1) {
+                baseName = fileName.substring(0, dotIndex);
+                extension = fileName.substring(dotIndex);
+            } else {
+                baseName = fileName;
+            }
 
             do {
                 fileName = baseName + "_" + count + extension;
-                filePath = "App/src/PrintedScores/" + fileName;
+                filePath = "App/src/PrintedScores/"+ fileName;
                 file = new File(filePath);
                 count++;
             } while (file.exists());
