@@ -130,4 +130,8 @@ public class Questions {
     public void setCntr(int cntr) {
         this.cntr = cntr;
     }
+
+    public int getLenOfNoRepeats(){
+        return noRepeats.size();
+    }
 }

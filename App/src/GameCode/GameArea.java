@@ -30,10 +30,10 @@ public class GameArea extends JPanel {
     private static String moneyWon;
     private static boolean ifChangeQuestionUsed;
 
+
     public GameArea(){
         createComponents();
         componentLayout();
-
     }
 
     private void createComponents(){
@@ -46,10 +46,13 @@ public class GameArea extends JPanel {
         exitGame = new JButton("Izađi iz igre");
         fiftyFifty = new JButton("50:50");
         fiftyFifty.setBackground(Color.yellow);
+        fiftyFifty.setToolTipText("50/50 uklanja dva kriva odgovora!");
         skipQuestion = new JButton("Preskoči pitanje");
         skipQuestion.setBackground(Color.yellow);
+        skipQuestion.setToolTipText("Preskoči pitanje i napreduj na sljedeće cijenovno pitanje!");
         changeQuestion = new JButton("Promijeni pitanje");
         changeQuestion.setBackground(Color.yellow);
+        changeQuestion.setToolTipText("Ostani na istom cijenovnom pitanju i promjeni pitanje!");
         questionArea = new JTextArea();
         questionArea.setColumns(60);
         questionArea.setRows(15);
@@ -116,7 +119,6 @@ public class GameArea extends JPanel {
     }
 
     public void activateGameArea(){
-
         if (gal != null){
             answerA.addActionListener(new ActionListener() {
                 @Override
@@ -138,6 +140,7 @@ public class GameArea extends JPanel {
                         }
                         setMoneyCounter(questions.getCurrentMoney());
                         setQuestionCounter(questions.getNumOfQuestion());
+                        isAMillionaire();
                         answerA.setEnabled(true);
                         answerB.setEnabled(true);
                         answerC.setEnabled(true);
@@ -180,6 +183,7 @@ public class GameArea extends JPanel {
                         }
                         setMoneyCounter(questions.getCurrentMoney());
                         setQuestionCounter(questions.getNumOfQuestion());
+                        isAMillionaire();
                         answerA.setEnabled(true);
                         answerB.setEnabled(true);
                         answerC.setEnabled(true);
@@ -222,6 +226,7 @@ public class GameArea extends JPanel {
                         }
                         setMoneyCounter(questions.getCurrentMoney());
                         setQuestionCounter(questions.getNumOfQuestion());
+                        isAMillionaire();
                         answerA.setEnabled(true);
                         answerB.setEnabled(true);
                         answerC.setEnabled(true);
@@ -264,6 +269,7 @@ public class GameArea extends JPanel {
                         }
                         setMoneyCounter(questions.getCurrentMoney());
                         setQuestionCounter(questions.getNumOfQuestion());
+                        isAMillionaire();
                         answerA.setEnabled(true);
                         answerB.setEnabled(true);
                         answerC.setEnabled(true);
@@ -376,5 +382,21 @@ public class GameArea extends JPanel {
 
     public static boolean isIfChangeQuestionUsed() {
         return ifChangeQuestionUsed;
+    }
+
+    public void isAMillionaire(){
+        if (questions.getLenOfNoRepeats() >= 16){
+            gameOver = new GameOver();
+            activateGameOverInGameArea();
+            JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(GameArea.this);
+            frame.getContentPane().removeAll();
+            frame.getContentPane().add(gameOver);
+            frame.repaint();
+            frame.revalidate();
+            GameAreaEvent gae = new GameAreaEvent(this);
+            gal.gameAreaBtnPressed(gae);
+            System.out.println(questions.getCurrentMoney() +"€"); // delete this, just for testing
+            moneyWon = questions.getCurrentMoney() +"€";
+        }
     }
 }

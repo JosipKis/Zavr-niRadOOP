@@ -8,6 +8,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class GameOver extends JPanel {
 
@@ -19,6 +23,7 @@ public class GameOver extends JPanel {
     private JLabel wonMoneyTxt;
     private GameOverListener gol;
     private GameArea gameArea;
+    private MainMenu mainMenu;
 
 
     public GameOver(){
@@ -58,7 +63,7 @@ public class GameOver extends JPanel {
 
     public void activateGameOver(){
         System.out.println("Before click"); // delete this, just for testing
-        if (gol != null){
+        if (gol != null) {
             System.out.println("After click"); // delete this, just for testing
             playAgainBtn.addActionListener(new ActionListener() {
                 @Override
@@ -79,9 +84,59 @@ public class GameOver extends JPanel {
                     gameArea.activateGameArea();
                 }
             });
-        }else {
-            System.out.println("Goll is null");
+            mainMenuBtn.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    System.out.println("MainMenu"); // delete this, just for testing
+                    GameOverEvent goe = new GameOverEvent(this);
+                    gol.gameOverBtnPressed(goe);
+                    mainMenu = new MainMenu();
+                    JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(GameOver.this);
+                    frame.getContentPane().removeAll();
+                    frame.getContentPane().add(mainMenu);
+                    frame.repaint();
+                    frame.revalidate();
+                    System.out.println("New main menu should appear"); // delete this, just for testing
+                    mainMenu.setMainMenuListener(event -> {
+                        String name = event.getName();
+                        String theme = event.getTheme();
+                        System.out.println(name + " " + theme);
+                        JOptionPane.showMessageDialog(null, event.toString(), "Sretno", JOptionPane.INFORMATION_MESSAGE);
+                    });
+                    mainMenu.activateMainMenu();
+                }
+            });
+            printResultsBtn.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    printResultOfPreviousGame();
+                }
+            });
         }
+    }
 
+    private void printResultOfPreviousGame(){
+        String fileName = "rezultat";
+        String filePath = "App/src/PrintedScores/" + fileName;
+        File file = new File(filePath);
+        if (file.exists()){
+            int count = 1;
+            String baseName = fileName.substring(0, fileName.lastIndexOf('.'));
+            String extension = fileName.substring(fileName.lastIndexOf('.'));
+
+            do {
+                fileName = baseName + "_" + count + extension;
+                filePath = "App/src/PrintedScores/" + fileName;
+                file = new File(filePath);
+                count++;
+            } while (file.exists());
+        }
+        try {
+            FileWriter fileWriter = new FileWriter(filePath);
+            fileWriter.append(GameArea.getMoneyWon());
+            fileWriter.close();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }
