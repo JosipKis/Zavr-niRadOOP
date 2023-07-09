@@ -3,10 +3,19 @@ package GameCode;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Main class used for determining the look of the application.
+ */
 public class MainFrame extends JFrame {
 
+    /**
+     * ManiFrames attributes.
+     */
     private MainMenu mainMenu;
 
+    /**
+     * Constructor for the MainFrame class.
+     */
     public MainFrame() {
         super("Tko želi biti milijunaš!");
         setSize(800, 600);
@@ -20,10 +29,16 @@ public class MainFrame extends JFrame {
         activateApp();
     }
 
+    /**
+     * Method used for creating the components of the MainFrame.
+     */
     private void createComponents() {
         mainMenu = new MainMenu();
     }
 
+    /**
+     * Method used for setting the layout of the MainFrame.
+     */
     private void componentLayout() {
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -34,12 +49,11 @@ public class MainFrame extends JFrame {
 
 
     }
-
+    /**
+     * Method used for activating the Main Menu of the application.
+     */
     private void activateApp(){
         mainMenu.setMainMenuListener(event -> {
-            String name = event.getName();
-            String theme = event.getTheme();
-            System.out.println(name + " " + theme);
             JOptionPane.showMessageDialog(null, event.toString(), "Sretno", JOptionPane.INFORMATION_MESSAGE);
         });
         mainMenu.activateMainMenu();

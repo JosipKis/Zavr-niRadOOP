@@ -2,8 +2,14 @@ package EventHandling;
 
 import java.util.EventObject;
 
+/**
+ * Game area event class.
+ */
 public class GameAreaEvent extends EventObject{
 
+    /**
+     * Attributes for the game area event class.
+     */
     private String answer;
 
     /**
@@ -17,10 +23,18 @@ public class GameAreaEvent extends EventObject{
         this.answer = answer;
     }
 
+    /**
+     * Constructor for the game area event class.
+     * @param source
+     */
     public GameAreaEvent(Object source){
         super(source);
     }
 
+    /**
+     * Getter for the answer attribute.
+     * @return
+     */
     public String getAnswer() {
         return answer;
     }

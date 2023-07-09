@@ -1,10 +1,16 @@
 package GameCode;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
+/**
+ * Class used for choosing the questions and the answers for the game.
+ */
 public class Questions {
 
+    /**
+     * Attributes for the questions class.
+     * Lists were used to store the questions and answers.
+     */
     private int cntr = 0;
     private String question;
     private String answA;
@@ -41,10 +47,19 @@ public class Questions {
     public  String[] moneyPoolList = new String[]{"100", "200", "300", "500", "1.000", "2.000", "4.000", "8.000", "16.000", "32.000", "64.000", "128.000", "256.000", "500.000", "1.000.000"};
     private String currentMoney;
 
+    /**
+     * constructor for the Questions class
+     */
     public Questions() {
 
     }
 
+    /**
+     * Method that chooses a question randomly from the question list
+     * and returns it. It also sets the answers and the correct answer.
+     * It does so by reading the players selected theme.
+     * @return
+     */
     public int rndQuestionSelector() {
         if (cntr < 1 && GameArea.isUsedChangeQ() && noRepeats.size() > 0) {
             noRepeats.remove(noRepeats.size() - 1);
@@ -86,30 +101,59 @@ public class Questions {
         return rnd;
     }
 
+    /**
+     * Method that returns the question chosen.
+     * @return
+     */
     public String getQuestion () {
         return question;
     }
 
+    /**
+     * Method that returns the answer A to the question.
+     * @return
+     */
     public String getAnswA () {
         return answA;
     }
 
+    /**
+     * Method that returns the answer B to the question.
+     * @return
+     */
     public String getAnswB () {
         return answB;
     }
 
+    /**
+     * Method that returns the answer C to the question.
+     * @return
+     */
     public String getAnswC () {
         return answC;
     }
 
+    /**
+     * Method that returns the answer D to the question.
+     * @return
+     */
     public String getAnswD () {
         return answD;
     }
 
+    /**
+     * Method that returns the correct answer to the question.
+     * Needed for checking whether the player has chosen the correct answer.
+     * @return
+     */
     public String getCorrectAnswer() {
         return correctAnswer;
     }
 
+    /**
+     * Method that returns the current money the player has won.
+     * @return
+     */
     public String getCurrentMoney() {
         if (currentMoney == null){
             return "0";
@@ -118,18 +162,34 @@ public class Questions {
         }
     }
 
+    /**
+     * Method that returns the number of questions that have been asked.
+     * @return
+     */
     public String getNumOfQuestion(){
         return String.valueOf(noRepeats.size());
     }
 
+    /**
+     * Method that sets the current money the player has won.
+     * @param currentMoney - the current money the player has won
+     */
     public void setCurrentMoney(String currentMoney) {
         this.currentMoney = currentMoney;
     }
 
+    /**
+     * Method that power ups don't work properly without.
+     * @param cntr
+     */
     public void setCntr(int cntr) {
         this.cntr = cntr;
     }
 
+    /**
+     * Method that returns the number of questions that have been asked.
+     * @return
+     */
     public int getLenOfNoRepeats(){
         return noRepeats.size();
     }

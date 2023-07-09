@@ -2,6 +2,9 @@ package EventHandling;
 
 import java.util.EventObject;
 
+/**
+ * Game over event class.
+ */
 public class GameOverEvent extends EventObject {
 
     /**

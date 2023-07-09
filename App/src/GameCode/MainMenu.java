@@ -9,8 +9,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
+/**
+ * Main menu class for the game.
+ */
 public class MainMenu extends JPanel {
 
+    /**
+     * Attributes for the main menu.
+     */
     private JButton startButton;
     private JComboBox<String> comboBox;
     private String[] gameThemes = {"Sport", "Video Igre"};
@@ -21,11 +27,18 @@ public class MainMenu extends JPanel {
     private GameArea gameArea;
     private static JCheckBox infinite5050;
 
+    /**
+     * Constructor for the main menu.
+     */
     public MainMenu() {
         createComponents();
         componentLayout();
     }
 
+    /**
+     * Method that creates the components for the main menu.
+     * It also calls 'checkIfFileExists' method.
+     */
     private void createComponents() {
         startButton = new JButton("Nova Igra");
         comboBox = new JComboBox<>(gameThemes);
@@ -37,6 +50,9 @@ public class MainMenu extends JPanel {
         checkIfFileExists();
     }
 
+    /**
+     * Method that sets the layout for the Main Menu part of the application.
+     */
     private void componentLayout() {
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -72,10 +88,19 @@ public class MainMenu extends JPanel {
         add(infinite5050, gbc);
     }
 
+    /**
+     * Method that takes Interface method as an argument to create
+     * a listener for the event in the Main Menu.
+     * @param mnl Interface method.
+     */
     public void setMainMenuListener(MainMenuListener mnl){
         this.mainMenuListener = mnl;
     }
 
+    /**
+     * Method that activates the Main Menu.
+     * It deals with button presses and selections made in the Main Menu.
+     */
     public void activateMainMenu(){
         if (mainMenuListener != null){
             startButton.addActionListener(new ActionListener() {
@@ -111,14 +136,26 @@ public class MainMenu extends JPanel {
         }
     }
 
+    /**
+     * Method that returns the theme of the game.
+     * @return
+     */
     public static String getTheme() {
         return theme;
     }
 
+    /**
+     * Method that returns the name of the player.
+     * @return
+     */
     public static String getThisName(){
         return name;
     }
 
+    /**
+     * Method that checks if the file exists.
+     * If it does, it enables the checkbox for infinite 50/50 Power up.
+     */
     public static void checkIfFileExists() {
         String filePath = "App/src/PrintedScores/Infinite 50-50";
         File file = new File(filePath);
@@ -128,6 +165,10 @@ public class MainMenu extends JPanel {
         }
     }
 
+    /**
+     * Method that returns the checkbox selection boolean value for infinite 50/50 Power up.
+     * @return
+     */
     public static JCheckBox getInfinite5050() {
         return infinite5050;
     }

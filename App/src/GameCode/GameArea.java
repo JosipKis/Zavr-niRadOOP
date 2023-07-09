@@ -11,8 +11,15 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ * Class that represents the game area.
+ * It contains all the components of the game.
+ */
 public class GameArea extends JPanel {
 
+    /**
+     * Attributes of the game area.
+     */
     private JButton answerA;
     private JButton answerB;
     private JButton answerC;
@@ -34,6 +41,9 @@ public class GameArea extends JPanel {
     private static String guaranteedMoney;
     private JTextArea guaranteedMoneyCntr;
 
+    /**
+     * Constructor for the game area.
+     */
     public GameArea(){
         guaranteedMoney = "0€";
         moneyWon = "0€";
@@ -41,6 +51,9 @@ public class GameArea extends JPanel {
         componentLayout();
     }
 
+    /**
+     * Method that creates (initializes) the components of the game area.
+     */
     private void createComponents(){
         questions = new Questions();
         questions.rndQuestionSelector();
@@ -71,7 +84,6 @@ public class GameArea extends JPanel {
         moneyCounter.setEditable(false);
         questionCounter = new JTextArea("1 / 15");
         questionCounter.setEditable(false);
-        System.out.println(questions.getCorrectAnswer()); // delete this; just for testing
         gameOver = new GameOver();
         questions.setCntr(0);
         usedChangeQ = false;
@@ -82,6 +94,9 @@ public class GameArea extends JPanel {
         guaranteedMoneyCntr.setEditable(false);
     }
 
+    /**
+     * Method that sets the layout of the game area.
+     */
     private void componentLayout(){
         setLayout(new MigLayout());
         JPanel powerUps = new JPanel(new MigLayout());
@@ -117,22 +132,43 @@ public class GameArea extends JPanel {
         add(answers, "dock south");
     }
 
+    /**
+     * Method that sets the question text in the text area.
+     */
     public void setQuestionArea(String question){
         questionArea.setText(question);
     }
 
+    /**
+     * Method that sets the current money won in its text area.
+     */
     private void setMoneyCounter(String money){
         moneyCounter.setText(questions.getCurrentMoney() +"€");
     }
 
+    /**
+     * Method that counts the number of questions the player answered
+     * out of 15.
+     * @param question
+     */
     private void setQuestionCounter(String question){
         questionCounter.setText(questions.getNumOfQuestion() +" / 15");
     }
 
+    /**
+     * Method that takes Interface method as an argument to create
+     * a listener for the events in the game area.
+     * @param gal Interface method
+     */
     public void setGameAreaListener(GameAreaListener gal){
         this.gal = gal;
     }
 
+    /**
+     * Method that activates the game area.
+     * Everything that happens in the game area is activated here.
+     * That includes the four answer buttons, the exit button and the power up buttons.
+     */
     public void activateGameArea(){
         if (gal != null){
             answerA.addActionListener(new ActionListener() {
@@ -408,6 +444,10 @@ public class GameArea extends JPanel {
         }
     }
 
+    /**
+     * Method that activates game over screen when the game is finished.
+     * Be it by quiting the game, answering wrong or winning the game.
+     */
     private void activateGameOverInGameArea(){
         gameOver.setGameOverListener(event -> {
 
@@ -415,14 +455,42 @@ public class GameArea extends JPanel {
         gameOver.activateGameOver();
     }
 
+    /**
+     * Method that returns the current money won.
+     * @return
+     */
     public static String getMoneyWon(){
         return moneyWon;
     }
 
+    /**
+     * Method that returns a boolean that tells us whether the change question power up was used.
+     * @return
+     */
     public static boolean isUsedChangeQ() {
         return usedChangeQ;
     }
 
+    /**
+     * Method that returns a boolean that tells us whether the 50/50 power up was used.
+     * @return
+     */
+    public static boolean isUsed5050() {
+        return used5050;
+    }
+
+    /**
+     * Method that returns a boolean that tells us whether the skip question power up was used.
+     * @return
+     */
+    public static boolean isUsedSkipQ() {
+        return usedSkipQ;
+    }
+
+    /**
+     * Method that sets guaranteed money the player wins if he/she answers wrong.
+     * @return
+     */
     private String setGuaranteedMoney(){
         switch (getMoneyWon()) {
             case "1.000€" -> {
@@ -445,7 +513,9 @@ public class GameArea extends JPanel {
         return guaranteedMoney;
     }
 
-
+    /**
+     * Method that checks if the player has won the game.
+     */
     public void isAMillionaire(){
         if (questions.getLenOfNoRepeats() >= 16){
             gameOver = new GameOver();
@@ -462,22 +532,26 @@ public class GameArea extends JPanel {
         }
     }
 
-    public static boolean isUsed5050() {
-        return used5050;
-    }
-
-    public static boolean isUsedSkipQ() {
-        return usedSkipQ;
-    }
-
+    /**
+     * Method that resets the power up counter to 'false'.
+     * @param usedChangeQ
+     */
     public static void setUsedChangeQ(boolean usedChangeQ) {
         GameArea.usedChangeQ = usedChangeQ;
     }
 
+    /**
+     * Method that resets the power up counter to 'false'.
+     * @param used5050
+     */
     public static void setUsed5050(boolean used5050) {
         GameArea.used5050 = used5050;
     }
 
+    /**
+     * Method that resets the power up counter to 'false'.
+     * @param usedSkipQ
+     */
     public static void setUsedSkipQ(boolean usedSkipQ) {
         GameArea.usedSkipQ = usedSkipQ;
     }
