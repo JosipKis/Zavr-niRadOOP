@@ -71,6 +71,7 @@ public class GameOver extends JPanel {
                     GameArea.setUsed5050(false);
                     GameArea.setUsedChangeQ(false);
                     GameArea.setUsedSkipQ(false);
+                    isPowerUpUsed = false;
                     GameOverEvent goe = new GameOverEvent(this);
                     gol.gameOverBtnPressed(goe);
                     gameArea = new GameArea();
@@ -91,6 +92,7 @@ public class GameOver extends JPanel {
                     GameArea.setUsed5050(false);
                     GameArea.setUsedChangeQ(false);
                     GameArea.setUsedSkipQ(false);
+                    isPowerUpUsed = false;
                     GameOverEvent goe = new GameOverEvent(this);
                     gol.gameOverBtnPressed(goe);
                     mainMenu = new MainMenu();

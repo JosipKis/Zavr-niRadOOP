@@ -33,6 +33,7 @@ public class MainMenu extends JPanel {
         nameField = new JTextField();
         infinite5050 = new JCheckBox("Neograničen 50 / 50");
         infinite5050.setEnabled(false);
+        infinite5050.setToolTipText("Osvoji Milijun bez pomoći!");
         checkIfFileExists();
     }
 
@@ -123,6 +124,7 @@ public class MainMenu extends JPanel {
         File file = new File(filePath);
         if (file.exists()){
             infinite5050.setEnabled(true);
+            infinite5050.setToolTipText("Čestitam!");
         }
     }
 
