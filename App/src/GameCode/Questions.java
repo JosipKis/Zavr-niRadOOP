@@ -46,7 +46,7 @@ public class Questions {
     }
 
     public int rndQuestionSelector() {
-        if (cntr < 1 && GameArea.isIfChangeQuestionUsed() && noRepeats.size() > 0) {
+        if (cntr < 1 && GameArea.isUsedChangeQ() && noRepeats.size() > 0) {
             noRepeats.remove(noRepeats.size() - 1);
             cntr++;
         }
@@ -83,7 +83,6 @@ public class Questions {
             correctAnswer = videoGamesCorrectAnswer[rnd];
         }
         noRepeats.add(rnd);
-        System.out.println(Arrays.toString(noRepeats.toArray())); // delete this, just for testing
         return rnd;
     }
 

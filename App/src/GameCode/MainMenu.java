@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 public class MainMenu extends JPanel {
 
@@ -18,6 +19,7 @@ public class MainMenu extends JPanel {
     private static String theme;
     private static String name;
     private GameArea gameArea;
+    private static JCheckBox infinite5050;
 
     public MainMenu() {
         createComponents();
@@ -29,6 +31,9 @@ public class MainMenu extends JPanel {
         comboBox = new JComboBox<>(gameThemes);
         comboBox.setSelectedIndex(-1);
         nameField = new JTextField();
+        infinite5050 = new JCheckBox("Neograničen 50 / 50");
+        infinite5050.setEnabled(false);
+        checkIfFileExists();
     }
 
     private void componentLayout() {
@@ -61,6 +66,9 @@ public class MainMenu extends JPanel {
         comboBox.setPreferredSize(new Dimension(300, 75));
         comboBox.setFont(new Font("Comic Sans", Font.BOLD, 40));
         add(comboBox, gbc);
+
+        gbc.gridy++;
+        add(infinite5050, gbc);
     }
 
     public void setMainMenuListener(MainMenuListener mnl){
@@ -108,5 +116,17 @@ public class MainMenu extends JPanel {
 
     public static String getThisName(){
         return name;
+    }
+
+    public static void checkIfFileExists() {
+        String filePath = "App/src/PrintedScores/Infinite 50-50";
+        File file = new File(filePath);
+        if (file.exists()){
+            infinite5050.setEnabled(true);
+        }
+    }
+
+    public static JCheckBox getInfinite5050() {
+        return infinite5050;
     }
 }

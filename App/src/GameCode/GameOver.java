@@ -11,6 +11,8 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class GameOver extends JPanel {
 
@@ -23,6 +25,7 @@ public class GameOver extends JPanel {
     private GameOverListener gol;
     private GameArea gameArea;
     private MainMenu mainMenu;
+    private static boolean isPowerUpUsed;
 
 
     public GameOver(){
@@ -43,8 +46,8 @@ public class GameOver extends JPanel {
         krajIgreTxt.setFont(fontZaKrajIgreTxt);
         setVisible(true);
         wonMoneyTxt = new JLabel(GameArea.getMoneyWon());
-        System.out.println(GameArea.getMoneyWon()); // delete this, just for testing
         wonMoneyTxt.setFont(new Font("Comic Sans", Font.BOLD, 45));
+
     }
 
     private void componentLayout(){
@@ -61,13 +64,13 @@ public class GameOver extends JPanel {
     }
 
     public void activateGameOver(){
-        System.out.println("Before click"); // delete this, just for testing
         if (gol != null) {
-            System.out.println("After click"); // delete this, just for testing
             playAgainBtn.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    System.out.println("Pp"); // delete this, just for testing
+                    GameArea.setUsed5050(false);
+                    GameArea.setUsedChangeQ(false);
+                    GameArea.setUsedSkipQ(false);
                     GameOverEvent goe = new GameOverEvent(this);
                     gol.gameOverBtnPressed(goe);
                     gameArea = new GameArea();
@@ -76,7 +79,6 @@ public class GameOver extends JPanel {
                     frame.getContentPane().add(gameArea);
                     frame.repaint();
                     frame.revalidate();
-                    System.out.println("New game area should appear"); // delete this, just for testing
                     gameArea.setGameAreaListener(event -> {
 
                     });
@@ -86,7 +88,9 @@ public class GameOver extends JPanel {
             mainMenuBtn.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    System.out.println("MainMenu"); // delete this, just for testing
+                    GameArea.setUsed5050(false);
+                    GameArea.setUsedChangeQ(false);
+                    GameArea.setUsedSkipQ(false);
                     GameOverEvent goe = new GameOverEvent(this);
                     gol.gameOverBtnPressed(goe);
                     mainMenu = new MainMenu();
@@ -95,7 +99,6 @@ public class GameOver extends JPanel {
                     frame.getContentPane().add(mainMenu);
                     frame.repaint();
                     frame.revalidate();
-                    System.out.println("New main menu should appear"); // delete this, just for testing
                     mainMenu.setMainMenuListener(event -> {
                         String name = event.getName();
                         String theme = event.getTheme();
@@ -114,36 +117,59 @@ public class GameOver extends JPanel {
         }
     }
 
-    private void printResultOfPreviousGame(){
-        String fileName = "rezultat.txt";
+    private void printResultOfPreviousGame() {
+        String fileName = "rezultat_" + MainMenu.getThisName() + ".txt";
         String filePath = "App/src/PrintedScores/" + fileName;
         File file = new File(filePath);
-        if (file.exists()) {
-            int count = 1;
-            String baseName;
-            String extension = "";
-
-            int dotIndex = fileName.lastIndexOf('.');
-            if (dotIndex != -1) {
-                baseName = fileName.substring(0, dotIndex);
-                extension = fileName.substring(dotIndex);
-            } else {
-                baseName = fileName;
-            }
-
-            do {
-                fileName = baseName + "_" + count + extension;
-                filePath = "App/src/PrintedScores/"+ fileName;
-                file = new File(filePath);
-                count++;
-            } while (file.exists());
-        }
         try {
-            FileWriter fileWriter = new FileWriter(filePath);
-            fileWriter.append(GameArea.getMoneyWon());
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            FileWriter fileWriter = new FileWriter(file, true);
+            fileWriter.append("\n\n");
+            fileWriter.append("Ime igrača: ");
+            fileWriter.append(MainMenu.getThisName() + "\n");
+            fileWriter.append("Igrana tema: ");
+            fileWriter.append(MainMenu.getTheme() +"\n");
+            fileWriter.append("Osvojen novac: ");
+            fileWriter.append(GameArea.getMoneyWon() + "\n\n");
+            if (GameArea.isUsed5050()) {
+                fileWriter.append("50 / 50 Power Up je korišten\n");
+            }
+            if (GameArea.isUsedChangeQ()) {
+                fileWriter.append("Promijeni pitanje Power Up je korišten\n");
+            }
+            if (GameArea.isUsedSkipQ()) {
+                fileWriter.append("Preskoči pitanje Power Up je korišten\n");
+            }
+            if (!isPowerUpUsed) {
+                fileWriter.append("Niti jedan Power Up nije korišten za vrijeme ove igre!");
+            }
+            Date currentDate = new Date();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+            String formattedDate = dateFormat.format(currentDate);
+            fileWriter.append("\n\nDatum i vrijeme: ");
+            fileWriter.append(formattedDate);
+            fileWriter.append("\n//////////////////////////////////////////////////////////////////////////////");
             fileWriter.close();
         } catch (IOException e) {
             System.out.println(e.getMessage());
+        }
+    }
+
+    public static void setIsPowerUpUsed(boolean isPowerUpUsed) {
+        GameOver.isPowerUpUsed = isPowerUpUsed;
+    }
+
+    public static void createInfiniteKey(){
+        if (!isPowerUpUsed && GameArea.getMoneyWon().equals("1.000.000€")){
+            try{
+                String filepath = "App/src/PrintedScores/" + "Infinite 50-50";
+                File file = new File(filepath);
+                FileWriter fileWriter = new FileWriter(file);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 }

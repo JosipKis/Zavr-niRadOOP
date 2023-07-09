@@ -28,7 +28,9 @@ public class GameArea extends JPanel {
     private GameAreaListener gal;
     private GameOver gameOver;
     private static String moneyWon;
-    private static boolean ifChangeQuestionUsed;
+    private static boolean usedChangeQ;
+    private static boolean used5050;
+    private static boolean usedSkipQ;
     private static String guaranteedMoney;
     private JTextArea guaranteedMoneyCntr;
 
@@ -72,7 +74,9 @@ public class GameArea extends JPanel {
         System.out.println(questions.getCorrectAnswer()); // delete this; just for testing
         gameOver = new GameOver();
         questions.setCntr(0);
-        ifChangeQuestionUsed = false;
+        usedChangeQ = false;
+        used5050 = false;
+        usedSkipQ = false;
         guaranteedMoney = "0€";
         guaranteedMoneyCntr = new JTextArea("0€");
         guaranteedMoneyCntr.setEditable(false);
@@ -155,11 +159,12 @@ public class GameArea extends JPanel {
                         guaranteedMoneyCntr.setText(setGuaranteedMoney());
                         setGuaranteedMoney();
                         isAMillionaire();
-                        System.out.println(getMoneyWon()); // delete this, just for testing
                         answerA.setEnabled(true);
                         answerB.setEnabled(true);
                         answerC.setEnabled(true);
                         answerD.setEnabled(true);
+                        GameOver.createInfiniteKey();
+                        MainMenu.checkIfFileExists();
                     }else {
                         JButton srcBtn = (JButton) e.getSource();
                         srcBtn.setBackground(Color.RED);
@@ -172,7 +177,6 @@ public class GameArea extends JPanel {
                         frame.getContentPane().add(gameOver);
                         frame.repaint();
                         frame.revalidate();
-                        System.out.println(questions.getCurrentMoney() +"€"); // delete this, just for testing
                     }
                     GameAreaEvent gae = new GameAreaEvent(this, answer);
                     gal.gameAreaBtnPressed(gae);
@@ -207,6 +211,8 @@ public class GameArea extends JPanel {
                         answerB.setEnabled(true);
                         answerC.setEnabled(true);
                         answerD.setEnabled(true);
+                        GameOver.createInfiniteKey();
+                        MainMenu.checkIfFileExists();
                     }else {
                         JButton srcBtn = (JButton) e.getSource();
                         srcBtn.setBackground(Color.RED);
@@ -249,11 +255,12 @@ public class GameArea extends JPanel {
                         guaranteedMoneyCntr.setText(setGuaranteedMoney());
                         setGuaranteedMoney();
                         isAMillionaire();
-                        System.out.println(getMoneyWon()); // delete this, just for testing
                         answerA.setEnabled(true);
                         answerB.setEnabled(true);
                         answerC.setEnabled(true);
                         answerD.setEnabled(true);
+                        GameOver.createInfiniteKey();
+                        MainMenu.checkIfFileExists();
                     }else {
                         JButton srcBtn = (JButton) e.getSource();
                         srcBtn.setBackground(Color.RED);
@@ -266,7 +273,6 @@ public class GameArea extends JPanel {
                         frame.getContentPane().add(gameOver);
                         frame.repaint();
                         frame.revalidate();
-                        System.out.println(questions.getCurrentMoney() +"€"); // delete this, just for testing
                     }
                     GameAreaEvent gae = new GameAreaEvent(this, answer);
                     gal.gameAreaBtnPressed(gae);
@@ -296,11 +302,12 @@ public class GameArea extends JPanel {
                         guaranteedMoneyCntr.setText(setGuaranteedMoney());
                         setGuaranteedMoney();
                         isAMillionaire();
-                        System.out.println(getMoneyWon()); // delete this, just for testing
                         answerA.setEnabled(true);
                         answerB.setEnabled(true);
                         answerC.setEnabled(true);
                         answerD.setEnabled(true);
+                        GameOver.createInfiniteKey();
+                        MainMenu.checkIfFileExists();
                     }else {
                         JButton srcBtn = (JButton) e.getSource();
                         srcBtn.setBackground(Color.RED);
@@ -313,7 +320,6 @@ public class GameArea extends JPanel {
                         frame.getContentPane().add(gameOver);
                         frame.repaint();
                         frame.revalidate();
-                        System.out.println(questions.getCurrentMoney() +"€"); // delete this, just for testing
                         moneyWon = guaranteedMoney;
                     }
                     GameAreaEvent gae = new GameAreaEvent(this, answer);
@@ -335,7 +341,6 @@ public class GameArea extends JPanel {
                         frame.revalidate();
                         GameAreaEvent gae = new GameAreaEvent(this);
                         gal.gameAreaBtnPressed(gae);
-                        System.out.println(questions.getCurrentMoney() +"€"); // delete this, just for testing
                         moneyWon = questions.getCurrentMoney() +"€";
                     }
                 }
@@ -361,9 +366,13 @@ public class GameArea extends JPanel {
                         }
                         btns.add(rndIndx);
                     }
-                    fiftyFifty.setEnabled(false);
-                    fiftyFifty.setBackground(Color.red);
-                    fiftyFifty.setForeground(Color.black);
+                    if (!MainMenu.getInfinite5050().isSelected()){
+                        used5050 = true;
+                        fiftyFifty.setEnabled(false);
+                        fiftyFifty.setBackground(Color.red);
+                        fiftyFifty.setForeground(Color.black);
+                    }
+                    GameOver.setIsPowerUpUsed(true);
                 }
             });
             changeQuestion.addActionListener(new ActionListener() {
@@ -377,7 +386,8 @@ public class GameArea extends JPanel {
                     answerD.setText(questions.getAnswD());
                     changeQuestion.setEnabled(false);
                     changeQuestion.setBackground(Color.red);
-                    ifChangeQuestionUsed = true;
+                    GameOver.setIsPowerUpUsed(true);
+                    usedChangeQ = true;
                 }
             });
             skipQuestion.addActionListener(new ActionListener() {
@@ -389,6 +399,8 @@ public class GameArea extends JPanel {
                     answerB.setText(questions.getAnswB());
                     answerC.setText(questions.getAnswC());
                     answerD.setText(questions.getAnswD());
+                    usedSkipQ = true;
+                    GameOver.setIsPowerUpUsed(true);
                     skipQuestion.setEnabled(false);
                     skipQuestion.setBackground(Color.red);
                 }
@@ -407,8 +419,8 @@ public class GameArea extends JPanel {
         return moneyWon;
     }
 
-    public static boolean isIfChangeQuestionUsed() {
-        return ifChangeQuestionUsed;
+    public static boolean isUsedChangeQ() {
+        return usedChangeQ;
     }
 
     private String setGuaranteedMoney(){
@@ -433,9 +445,6 @@ public class GameArea extends JPanel {
         return guaranteedMoney;
     }
 
-    public void externalSetGMoney(){
-        guaranteedMoney = "0€";
-    }
 
     public void isAMillionaire(){
         if (questions.getLenOfNoRepeats() >= 16){
@@ -448,8 +457,28 @@ public class GameArea extends JPanel {
             frame.revalidate();
             GameAreaEvent gae = new GameAreaEvent(this);
             gal.gameAreaBtnPressed(gae);
-            System.out.println(questions.getCurrentMoney() +"€"); // delete this, just for testing
+            System.out.println(questions.getCurrentMoney() +"€");
             moneyWon = questions.getCurrentMoney() +"€";
         }
+    }
+
+    public static boolean isUsed5050() {
+        return used5050;
+    }
+
+    public static boolean isUsedSkipQ() {
+        return usedSkipQ;
+    }
+
+    public static void setUsedChangeQ(boolean usedChangeQ) {
+        GameArea.usedChangeQ = usedChangeQ;
+    }
+
+    public static void setUsed5050(boolean used5050) {
+        GameArea.used5050 = used5050;
+    }
+
+    public static void setUsedSkipQ(boolean usedSkipQ) {
+        GameArea.usedSkipQ = usedSkipQ;
     }
 }
